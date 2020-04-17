@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script>
+      function registerSW() {
+        console.log('Registering ServiceWorker.');
+        navigator.serviceWorker.register('service-worker.js');
+      }
+    </script>
+  </head>
+  <body>
+    <h1>My Simple Application</h1>
+
+    <p>This application demonstrates the working of a simple Service Worker.</p>
+    <button onclick="registerSW()">Register SW</button>
+  </body>
+</html>
