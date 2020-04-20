@@ -1,18 +1,184 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
     <script>
-      function registerSW() {
-        console.log('Registering ServiceWorker.');
-        navigator.serviceWorker.register('service-worker.js');
-      }
-    </script>
-  </head>
-  <body>
-    <h1>My Simple Application</h1>
+      //initialize
+      precorWorkout.addWorkout(
+        JSON.stringify({
+          name: 'My Custom Workout',
+          provider: 'provider',
+          category: 'category',
+        }),
+        JSON.stringify({
+          previewImage:
+            'http://www.v3wall.com/wallpaper/medium/0912/medium_20091208123023224450.jpg',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          backgroundImage:
+            'http://crazy-frankenstein.com/free-wallpapers-files/nature-wallpapers/forest-wallpapers/ancient-giants-big-basin-redwood-wallpaper.jpg',
+          identifier: 'identifier',
+        })
+      ); //FEATURED_PROVIDER_INDEX
+      precorWorkout.setFeaturedWorkout(
+        JSON.stringify({
+          name: 'My Custom Workout',
+          provider: 'provider',
+          category: 'category',
+        })
+      );
+      precorWorkout.setQuickstartWorkout(
+        JSON.stringify({
+          name: 'My Custom Workout',
+          provider: 'provider',
+          category: 'category',
+        })
+      );
 
-    <p>This application demonstrates the working of a simple Service Worker.</p>
-    <button onclick="registerSW()">Register SW</button>
+      precorWorkout.onWorkoutSelected = function (identifier) {
+        document.getElementById('output').innerHTML =
+          'onWorkoutSelected ' + identifier;
+      };
+
+      //precorWorkout.onSpeedChangeRequested      = function(speedValue)     {document.getElementById('output').innerHTML = 'onSpeedChangeRequested '      +      speedValue}
+      //precorWorkout.onResistanceChangeRequested = function(resistanceValue){document.getElementById('output').innerHTML = 'onResistanceChangeRequested ' + resistanceValue}
+      //precorWorkout.onInclineChangeRequested    = function(inclineValue)   {document.getElementById('output').innerHTML = 'onInclineChangeRequested '    +    inclineValue}
+      //precorWorkout.onRampChangeRequested       = function(rampValue)      {document.getElementById('output').innerHTML = 'onRampChangeRequested '       +       rampValue}
+
+      //precorWorkout.onWorkoutStateChanged       = function(state)          {document.getElementById('output').innerHTML = 'onWorkoutStateChanged '       +           state}
+      precorWorkout.onWorkoutStateChanged = function (state) {
+        if (state === 'RUNNING') {
+          precorWorkout.setBarMessage('THIS IS THE FIRST MESSAGE', 1);
+        }
+      };
+      precorWorkout.onMetricsUpdated = function (metricsMap) {
+        document.getElementById('output').innerHTML =
+          'onMetricsUpdated ' + metricsMap;
+      };
+      precorWorkout.onSummaryMetricsUpdated = function (metricsMap) {
+        document.getElementById('output').innerHTML =
+          'onSummaryMetricsUpdated ' + metricsMap;
+      };
+      //precorWorkout.onWorkoutShown              = function()               {document.getElementById('output').innerHTML = 'onWorkoutShown'}
+      //precorWorkout.onWorkoutHidden             = function()               {document.getElementById('output').innerHTML = 'onWorkoutHidden'}
+
+      precorWorkout.onRequestSignInCompleted = function (succeeded) {
+        document.getElementById('output').innerHTML =
+          'onRequestSignInCompleted ' + succeeded;
+      };
+      precorWorkout.onSignedIn = function () {
+        document.getElementById('output').innerHTML = 'onSignedIn';
+      };
+      precorWorkout.onSignedOut = function () {
+        document.getElementById('output').innerHTML = 'onSignedOut';
+      };
+    </script>
+    <script src="demo.js"></script>
+  </head>
+  <body style="background-color: yellow;">
+    <h1>workout</h1>
+
+    <!--button onclick='document.getElementById("output").innerHTML = precorWorkout.getEquipmentType()'><font size=6>getEquipmentType</font></button-->
+    <button onclick="registerSW()">
+      <font size="6">registerSW</font>
+    </button>
+    <button
+      onclick='document.getElementById("output").innerHTML = precorWorkout.getWorkoutLimits()'
+    >
+      <font size="6">getWorkoutLimits</font>
+    </button>
+    <button
+      onclick='document.getElementById("output").innerHTML = precorWorkout.getState()'
+    >
+      <font size="6">getState</font>
+    </button>
+
+    <br />
+    <button onclick="precorWorkout.setSpeed(2)">
+      <font size="6">setSpeed</font>
+    </button>
+    <button onclick="precorWorkout.setResistance(2)">
+      <font size="6">setResistance</font>
+    </button>
+    <button onclick="precorWorkout.setIncline(2)">
+      <font size="6">setIncline</font>
+    </button>
+    <button onclick="precorWorkout.setRamp(2)">
+      <font size="6">setRamp</font>
+    </button>
+
+    <br />
+    <button onclick="precorWorkout.cancelPreWorkoutPhase()">
+      <font size="6">cancelPreWorkoutPhase</font>
+    </button>
+    <button onclick="precorWorkout.finishPreWorkoutPhase()">
+      <font size="6">finishPreWorkoutPhase</font>
+    </button>
+    <button onclick="precorWorkout.finishWorkoutPhase()">
+      <font size="6">finishWorkoutPhase</font>
+    </button>
+    <button onclick="precorWorkout.finishPostWorkoutPhase()">
+      <font size="6">finishPostWorkoutPhase</font>
+    </button>
+    <button onclick="precorWorkout.setHidePrecorSummaryAfterWorkout(true)">
+      <font size="6">setHidePrecorSummaryAfterWorkout(true)</font>
+    </button>
+    <button onclick="precorWorkout.setHidePrecorSummaryAfterWorkout(false)">
+      <font size="6">setHidePrecorSummaryAfterWorkout(false)</font>
+    </button>
+    <button onclick='precorWorkout.setBarMessage("THIS IS BAR MESSAGE 2", 1)'>
+      <font size="6">setBarMessage</font>
+    </button>
+    <button
+      onclick='precorWorkout.setFeaturedWorkout(JSON.stringify({name: "My Custom Workout", provider: "provider", category: "category"}))'
+    >
+      <font size="6">setFeaturedWorkout</font>
+    </button>
+    <button onclick='precorWorkout.setFeaturedWorkout("")'>
+      <font size="6">setFeaturedWorkout("")</font>
+    </button>
+    <button
+      onclick='precorWorkout.setQuickstartWorkout(JSON.stringify({name: "My Custom Workout", provider: "provider", category: "category"}))'
+    >
+      <font size="6">setQuickstartWorkout</font>
+    </button>
+    <button onclick="precorWorkout.requestSignIn()">
+      <font size="6">requestSignIn</font>
+    </button>
+    <button
+      onclick='precorWorkout.disableMenus();  document.getElementById("output").innerHTML = "disableMenus"'
+    >
+      <font size="6">disableMenus</font>
+    </button>
+    <button onclick="precorWorkout.setDisableMachineControls(true)">
+      <font size="6">setDisableMachineControls(true)</font>
+    </button>
+    <button onclick="precorWorkout.setDisableMachineControls(false)">
+      <font size="6">setDisableMachineControls(false)</font>
+    </button>
+
+    <button
+      onclick='document.getElementById("output").innerHTML = precorWorkout.getMetrics()'
+    >
+      <font size="6">getMetrics</font>
+    </button>
+    <button
+      onclick='document.getElementById("output").innerHTML = precorWorkout.getSummaryMetrics()'
+    >
+      <font size="6">getSummaryMetrics</font>
+    </button>
+    <button
+      onclick='document.getElementById("output").innerHTML = precorWorkout.getFitnessEquipmentInfo()'
+    >
+      <font size="6">getFitnessEquipmentInfo</font>
+    </button>
+
+    <button onclick='console.log("console.log")'>
+      <font size="6">conole.log</font>
+    </button>
+    <button onclick="error"><font size="6">error</font></button>
+
+    <!--font size=6><pre id='output'></pre></font-->
+
+    <br />
+    <font size="3"><textarea id="output" cols="60" rows="6"></textarea></font>
   </body>
 </html>

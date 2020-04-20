@@ -1,7 +1,5 @@
 const PRECACHE = 'precache-v1';
-// const RUNTIME = 'runtime';
-
-const PRECACHE_URLS = ['index.html', './', 'styles.css', 'background.jpg'];
+const PRECACHE_URLS = ['index.html', './'];
 
 self.addEventListener('install', (event) => {
   console.log('🚩 Install Event');
@@ -16,11 +14,18 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   console.log('🚩 Activate Event');
   self.clients.claim();
+  self.clients.matchAll().then(function (clients) {
+    clients.forEach(function (client) {
+      console.log(client);
+      client.postMessage({
+        command: 'SET_OFFLINE_READY',
+      });
+    });
+  });
 });
 
 self.addEventListener('fetch', (event) => {
   console.log('🚩 Fetch Event');
-  console.log(event.request);
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
@@ -30,14 +35,6 @@ self.addEventListener('fetch', (event) => {
         return fetch(event.request).then((response) => {
           return response;
         });
-
-        // return caches.open(RUNTIME).then((cache) => {
-        //   return fetch(event.request).then((response) => {
-        //     return cache.put(event.request, response.clone()).then(() => {
-        //       return response;
-        //     });
-        //   });
-        // });
       })
     );
   }
