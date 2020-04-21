@@ -5,9 +5,5 @@ function registerSW() {
 
 window.navigator.serviceWorker.onmessage = function (event) {
   if (event.data.command === 'SET_OFFLINE_READY')
-    if (precorWorkout)
-      console.log('I am available');
-    else
-      console.log('I am not available');
-  // precorWorkout.setDefault();
+    precorWorkout.setDefaultURL();
 };
