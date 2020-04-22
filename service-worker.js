@@ -1,5 +1,5 @@
 const PRECACHE = 'precache-v1';
-const PRECACHE_URLS = ['index.html', './'];
+const PRECACHE_URLS = ['index.html', './', 'demo.js'];
 
 self.addEventListener('install', (event) => {
   console.log('🚩 Install Event');
